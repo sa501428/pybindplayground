@@ -23,8 +23,8 @@ class get_pybind_include(object):
 
 ext_modules = [
     Extension(
-        'strawC',
-        ['src/straw.cpp'],
+        'playgroundC',
+        ['src/playground.cpp'],
         include_dirs=[
             # Path to pybind11 headers
             get_pybind_include(),
@@ -98,12 +98,12 @@ class BuildExt(build_ext):
         build_ext.build_extensions(self)
 
 setup(
-    name='strawC',
+    name='playgroundC',
     version=__version__,
-    author='Neva C. Durand',
-    author_email='neva@broadinstitute.org',
+    author='Aiden Lab',
+    author_email='aidenlab@bcm.edu',
     url='https://github.com/aidenlab/straw',
-    description='Straw bound with pybind11',
+    description='Playground for pybind11',
     long_description='',
     ext_modules=ext_modules,
     install_requires=['pybind11>=2.4'],
