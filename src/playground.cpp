@@ -96,6 +96,8 @@ public:
     }
 };
 
+// todo after the initial stuff is working
+// instead of a vector, return a numpy array
 std::vector<int32_t> quickTest(int32_t seed){
     vector<int32_t> results = vector<int32_t>();
     MyHFile *h1 = new MyHFile(seed, 4);
