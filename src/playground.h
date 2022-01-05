@@ -29,8 +29,6 @@
 #include <vector>
 #include <map>
 
-std::vector<contactRecord>
-straw(std::string matrixType, std::string norm, std::string fname, std::string chr1loc, std::string chr2loc,
-      const std::string &unit, int32_t binsize);
+std::vector<int32_t> quickTest(int32_t seed);
 
 #endif

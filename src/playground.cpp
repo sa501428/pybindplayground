@@ -97,6 +97,28 @@ public:
     }
 };
 
+std::vector<int32_t> quickTest(int32_t seed){
+    vector<int32_t> results = vector<int32_t>();
+    MyHFile h1 = new MyHFile(9, 4);
+    MyHFile h2 = new MyHFile(3, 7);
+
+    results.push_back(h1.getA());
+    results.push_back(h1.getB());
+    results.push_back(h2.getA());
+    
+    MZData m1 = h1.getMZD();
+    results.push_back(m1.getC1());
+    results.push_back(m1.getC2());
+
+    h1.addToA(5);
+    results.push_back(h1.getA());
+
+    results.push_back(m1.getC1());
+    results.push_back(m1.getC2());
+
+    return results;
+}
+
 
 /**
 namespace py = pybind11;
