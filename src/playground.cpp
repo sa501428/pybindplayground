@@ -32,12 +32,38 @@
 #include <streambuf>
 #include <curl/curl.h>
 #include "zlib.h"
-#include "straw.h"
-#include <pybind11/pybind11.h>
-#include <pybind11/stl.h>
+#include "playground.h"
+//#include <pybind11/pybind11.h>
+//#include <pybind11/stl.h>
 using namespace std;
 
 
+class MZData {
+public:
+    int32_t c1 = 0;
+    int32_t c2 = 0;
+
+    MZData(int32_t a, int32_t b) {
+        c1 = a*2;
+        c2 = b*-2;
+    }
+
+    int32_t getC1() {
+        return c1;
+    }
+
+    int32_t getC2() {
+        return c2;
+    }
+
+    void addToC1(int32_t x1) {
+        c1 = c1 + x1;
+    }
+
+    void addToC2(int32_t x2) {
+        c2 = c2 + x2;
+    }
+};
 
 class MyHFile {
 public:
@@ -70,53 +96,30 @@ public:
     }
 };
 
-class MZData {
-public:
-    int32_t c1 = 0;
-    int32_t c2 = 0;
-
-    MZData(int32_t a, int32_t b) {
-        c1 = a*2;
-        c2 = b*-2;
-    }
-
-    int32_t getC1() {
-        return c1;
-    }
-
-    int32_t getC2() {
-        return c2;
-    }
-
-    void addToC1(int32_t x1) {
-        c1 = c1 + x1;
-    }
-
-    void addToC2(int32_t x2) {
-        c2 = c2 + x2;
-    }
-};
-
 std::vector<int32_t> quickTest(int32_t seed){
     vector<int32_t> results = vector<int32_t>();
-    MyHFile h1 = new MyHFile(9, 4);
-    MyHFile h2 = new MyHFile(3, 7);
+    MyHFile *h1 = new MyHFile(seed, 4);
+    MyHFile *h2 = new MyHFile(3, 7);
 
-    results.push_back(h1.getA());
-    results.push_back(h1.getB());
-    results.push_back(h2.getA());
-    
-    MZData m1 = h1.getMZD();
+    results.push_back(h1->getA());
+    results.push_back(h1->getB());
+    results.push_back(h2->getA());
+
+    MZData m1 = h1->getMZD();
     results.push_back(m1.getC1());
     results.push_back(m1.getC2());
 
-    h1.addToA(5);
-    results.push_back(h1.getA());
+    h1->addToA(5);
+    results.push_back(h1->getA());
 
     results.push_back(m1.getC1());
     results.push_back(m1.getC2());
 
     return results;
+}
+
+int main(int argc, char *argv[]){
+    quickTest(10);
 }
 
 
