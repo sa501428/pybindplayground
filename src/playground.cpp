@@ -30,11 +30,11 @@
 #include <set>
 #include <vector>
 #include <streambuf>
-#include <curl/curl.h>
+//#include <curl/curl.h>
 #include "zlib.h"
 #include "playground.h"
-//#include <pybind11/pybind11.h>
-//#include <pybind11/stl.h>
+#include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
 using namespace std;
 
 
@@ -121,32 +121,39 @@ std::vector<int32_t> quickTest(int32_t seed){
 }
 
 int main(int argc, char *argv[]){
-    quickTest(10);
+    quickTest(seed);
 }
 
 
-/**
+
 namespace py = pybind11;
 
+//playgroundC is what we're importing
 PYBIND11_MODULE(playgroundC, m) {
-m.doc() = "Fast tool for reading H files";
+m.doc() = "Playground for testing pybind11";
 
-m.def("strawC", &straw, "get contact records");
-m.def("getRecords", &getBlockRecordsWithNormalization, "get contact records using normalization info");
+//When taking function (not methods) we put semicolons after every definition
+//m.def("", &straw, "get contact records");
 
-py::class_<contactRecord>(m, "contactRecord")
-.def(py::init<>())
-.def_readwrite("binX", &contactRecord::binX)
-.def_readwrite("binY", &contactRecord::binY)
-.def_readwrite("counts", &contactRecord::counts)
+//Class name goes here. In arrowheads goes the C++ class name and in quotations goes the python classname we're going to use.
+//When defining methods not function we put semicolons at the end of all definitions
+py::class_<MZData>(m, "Mzdata")
+    //Init is used for defining the constructor and within the constructor we define the types of the constructor parameters
+    .def(py::init<int , int >())
+    //The first argument of def is how we want to define the method when we call it from python
+    //The second argument of def is the namespace and method we are retrieving from that namespace
+    .def("getC1", &MZData::getC1)
+    .def("getC2", &MZData::getC2)
+    .def("addToC1", &MZData::addToC1)
+    .def("addToC2", &MZData::addToC2)
 ;
-
-py::class_<chromosome>(m, "chromosome")
-.def(py::init<>())
-.def_readwrite("name", &chromosome::name)
-.def_readwrite("index", &chromosome::index)
-.def_readwrite("length", &chromosome::length)
-;
+py::class_<MyHFile>(m, "MyHFile")
+    //.def is used for methods while .def_readwrite is used for fields and being able to modify them
+    .def(py::init<int32_t, int32_t>())
+    .def("addToA", &MyHFile::addToA)
+    .def("addToB", &MyHFile::addToB)
+    .def("getA", &MyHFile::getA)
+    .def("getB", &MyHFile::getB)
 
 #ifdef VERSION_INFO
 m.attr("__version__") = VERSION_INFO;
@@ -154,5 +161,5 @@ m.attr("__version__") = VERSION_INFO;
 m.attr("__version__") = "dev";
 #endif
 }
-*/
+
 
