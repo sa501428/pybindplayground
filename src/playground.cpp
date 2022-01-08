@@ -30,7 +30,7 @@
 #include <set>
 #include <vector>
 #include <streambuf>
-#include <curl/curl.h>
+//#include <curl/curl.h>
 #include "zlib.h"
 #include "playground.h"
 //#include <pybind11/pybind11.h>
@@ -100,32 +100,47 @@ public:
 // instead of a vector, return a numpy array
 std::vector<int32_t> quickTest(int32_t seed){
     vector<int32_t> results = vector<int32_t>();
+    // a = 10, b = 4
     MyHFile *h1 = new MyHFile(seed, 4);
+    //a = 3, b = 7
     MyHFile *h2 = new MyHFile(3, 7);
 
+    //results adds 10
     results.push_back(h1->getA());
+    //results adds 4
     results.push_back(h1->getB());
+    //results adds 3
     results.push_back(h2->getA());
 
+    //MZData C1 = 20, C2 = -8
     MZData m1 = h1->getMZD();
+    // results pushes 20
     results.push_back(m1.getC1());
+    // results pushes -8
     results.push_back(m1.getC2());
 
+    //a in h1 becomes 15
     h1->addToA(5);
+    //we push 15 to results
     results.push_back(h1->getA());
 
+    //we push 20 again
     results.push_back(m1.getC1());
+    //we push -8 again
     results.push_back(m1.getC2());
 
     return results;
 }
 
 int main(int argc, char *argv[]){
-    quickTest(10);
+    std::vector<int32_t> result_test = quickTest(atoi(argv[1]));
+    for(int i=0; i < result_test.size(); i++)
+        std::cout << result_test.at(i) << ' ';
+    return 0;
 }
 
 
-
+/*
 namespace py = pybind11;
 
 //playgroundC is what we're importing
@@ -156,6 +171,7 @@ py::class_<MyHFile>(m, "MyHFile")
     .def("addToB", &MyHFile::addToB)
     .def("getA", &MyHFile::getA)
     .def("getB", &MyHFile::getB)
+    .def("getMZD", &MyHFile::getMZD)
 ;
 #ifdef VERSION_INFO
 m.attr("__version__") = VERSION_INFO;
@@ -163,5 +179,4 @@ m.attr("__version__") = VERSION_INFO;
 m.attr("__version__") = "dev";
 #endif
 }
-
-
+*/
