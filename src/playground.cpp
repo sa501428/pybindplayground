@@ -137,6 +137,8 @@ m.doc() = "Playground for testing pybind11";
 
 //Class name goes here. In arrowheads goes the C++ class name and in quotations goes the python classname we're going to use.
 //When defining methods not function we put semicolons at the end of all definitions
+
+//This entire class works
 py::class_<MZData>(m, "MZData")
     //Init is used for defining the constructor and within the constructor we define the types of the constructor parameters
     .def(py::init<int, int>())
