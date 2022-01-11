@@ -99,7 +99,7 @@ public:
 
 // todo after the initial stuff is working
 // instead of a vector, return a numpy array
-std::vector<int32_t> quickTest(int32_t seed){
+std::vector<int32_t> quickTest1d(int32_t seed){
     vector<int32_t> results = vector<int32_t>();
     // a = 10, b = 4
     MyHFile *h1 = new MyHFile(seed, 4);
@@ -133,12 +133,34 @@ std::vector<int32_t> quickTest(int32_t seed){
     return results;
 }
 
+vector<vector<int32_t>> quickTest2d(int32_t arrays, int32_t els_in_array){
+    auto results = vector<vector<int32_t>>();
+    // a = 10, b = 4
+    //MyHFile *h1 = new MyHFile(seed, 4);
+    //a = 3, b = 7
+    //MyHFile *h2 = new MyHFile(3, 7);
 
+    //arrays arrays of size els_in_arrays.
+    for (auto i = 0; i < arrays; i++){
+        results.push_back(vector<int32_t>(els_in_array));
+    }
+
+    for (auto i = 0; i < arrays; i++){
+        for (auto j = 0; j < els_in_array; j++){
+            results[i][j] = 255;
+        }
+    }
+    //results adds 10
+
+
+
+    return results;
+}
 
 int main(int argc, char *argv[]){
-    std::vector<int32_t> result_test = quickTest(atoi(argv[1]));
-    for(int i=0; i < result_test.size(); i++)
-        std::cout << result_test.at(i) << ' ';
+    //std::vector<int32_t> result_test = quickTest(atoi(argv[1]));
+    //for(int i=0; i < result_test.size(); i++)
+     //   std::cout << result_test.at(i) << ' ';
     return 0;
 }
 
@@ -154,7 +176,11 @@ m.doc() = "Playground for testing pybind11";
 
 
 //Lambda dunction, we specify the C++ type and parameter
-m.def("quickTestNumpy", [](int32_t seed){
+m.def("quickTestNumpy2d", [](int32_t arrays, int32_t els_in_array){
+py::array out = py::cast(quickTest2d(arrays, els_in_array));
+return out;
+});
+m.def("quickTestNumpy1d", [](int32_t seed){
 py::array out = py::cast(quickTest(seed));
 return out;
 });
