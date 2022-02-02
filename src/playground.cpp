@@ -36,6 +36,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <pybind11/numpy.h>
+#include <algorithm>
 using namespace std;
 namespace py = pybind11;
 
@@ -180,6 +181,50 @@ vector<vector<int32_t>> quickTest2d(int32_t arrays, int32_t els_in_array) {
 
     return results;
 }
+
+
+vector<double> slice(vector<double> &v, int64_t m, int64_t n){
+    vector<double> vec;
+    copy(v.begin() + m, v.begin() + n + 1, back_inserter(vec));
+    return vec;
+}
+
+
+double median(vector<double> &v){
+    size_t n = v.size() / 2;
+    nth_element(v.begin(), v.begin()+n, v.end());
+    return v[n];
+}
+
+void rollingMedian(vector<double> &initialValues, vector<double> &finalResult, int32_t window) {
+    // window is actually a ~wing-span
+    if (window < 1) {
+        finalResult = initialValues;
+        return;
+    }
+
+    finalResult.push_back(initialValues[0]);
+    int64_t length = initialValues.size();
+    for (int64_t index = 1; index < length; index++) {
+        int64_t initialIndex;
+        int64_t finalIndex;
+        if (index < window){
+            initialIndex = 0;
+            finalIndex = 2*index;
+        } else {
+            initialIndex = index - window;
+            finalIndex = index + window;
+        }
+
+        if(finalIndex > length - 1){
+            finalIndex = length - 1;
+        }
+
+        vector<double> subVector = slice(initialValues, initialIndex, finalIndex);
+        finalResult.push_back(median(subVector));
+    }
+}
+
 
 int main(int argc, char* argv[]) {
     //std::vector<int32_t> result_test = quickTest(atoi(argv[1]));
